@@ -23,7 +23,7 @@ module.exports = (collectionStates = null) => {
 
   });
 
-  router.get('/getAllState', (req, res) => {
+  router.get('/getAllStates', (req, res) => {
 
     collectionStates
       .find()
