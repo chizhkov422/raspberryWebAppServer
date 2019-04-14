@@ -1,2 +1,2 @@
 # Raspberry Web App Server
-Heroku-URL: https://raspberry-web-app-server.herokuapp.com/
+Heroku-URL: https://remote-control-iot-server.herokuapp.com/
