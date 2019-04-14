@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-module.exports = (mongooseModel) => {
+module.exports = (mongooseModel, socketConnection) => {
 
   router.get('/getAllStates', (req, res) => {
 
@@ -15,6 +15,8 @@ module.exports = (mongooseModel) => {
     if (!req.body) return res.sendStatus(400);
 
     const state = JSON.parse(req.body.state);
+
+    socketConnection.emit('checkbox state', state.stateValue);
 
     mongooseModel.updateOne({ stateName: state.stateName }, { stateValue: state.stateValue }, { upsert: true }).then(() => {
       return res.send({

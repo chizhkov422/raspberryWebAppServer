@@ -20,7 +20,7 @@ const api = require('./api/states');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use('/api/states', api(State));
+app.use('/api/states', api(State, io));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
