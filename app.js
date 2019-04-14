@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 
 const State = mongoose.model('State', {
   stateName: String,
-  stateValue: String
+  stateValue: Boolean
 });
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
