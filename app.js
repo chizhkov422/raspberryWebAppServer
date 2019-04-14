@@ -60,7 +60,7 @@ io.on('connection', () => {
  * Start server on 3000 port
  */
 
-const server = http.listen(3000, () => {
+const server = http.listen(process.env.PORT || 3000, () => {
   try {
     console.log('server is running on port', server.address().port);
   } catch (err) {
