@@ -52,8 +52,8 @@ mongoose.connect(dbUrl, { useNewUrlParser: true }, () => {
   }
 })
 
-io.on('connection', () => {
-  console.log('user is connected');
+io.on('connection', (a) => {
+  console.log('user is connected: ', a);
 })
 
 /**
