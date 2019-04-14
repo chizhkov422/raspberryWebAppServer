@@ -42,7 +42,7 @@ function callBackForGetState(res, state) {
     return res.send({
       data: state,
       success: true,
-      message: "Document updated!"
+      message: ""
     });
   } catch (err) {
     console.error(err);
@@ -54,7 +54,7 @@ function callBackForGetAllStates(res, states) {
     return res.send({
       data: states,
       success: true,
-      message: "Document updated!"
+      message: ""
     });
   } catch (err) {
     console.error(err);
