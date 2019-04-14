@@ -16,11 +16,9 @@ module.exports = (mongooseModel, socketConnection) => {
 
     const state = JSON.parse(req.body.state);
 
-    const stateValue = Boolean(state.stateValue);
+    socketConnection.emit('checkbox state', state.stateValue);
 
-    socketConnection.emit('checkbox state', stateValue);
-
-    mongooseModel.updateOne({ stateName: state.stateName }, { stateValue: stateValue }, { upsert: true }).then(() => {
+    mongooseModel.updateOne({ stateName: state.stateName }, { stateValue: state.stateValue }, { upsert: true }).then(() => {
       return res.send({ success: true, message: "Document updated!" });
     });
 
