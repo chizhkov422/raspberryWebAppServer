@@ -19,10 +19,7 @@ module.exports = (mongooseModel, socketConnection) => {
     socketConnection.emit('checkbox state', state.stateValue);
 
     mongooseModel.updateOne({ stateName: state.stateName }, { stateValue: state.stateValue }, { upsert: true }).then(() => {
-      return res.header({ 'Access-Control-Allow-Origin': '*' }).send({
-        success: true,
-        message: "Document updated!"
-      });
+      return res.send({ success: true, message: "Document updated!" });
     });
 
   });

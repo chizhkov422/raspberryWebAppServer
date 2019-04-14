@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -11,11 +12,12 @@ const State = mongoose.model('State', {
   stateValue: String
 });
 
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 /**
  * Router dependencies.
  */
 const api = require('./api/states');
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
