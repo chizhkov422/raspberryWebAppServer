@@ -1,45 +1,69 @@
 const createError = require('http-errors');
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
 
+const State = mongoose.model('State', {
+  stateName: String,
+  stateValue: String
+});
 
 /**
  * Router dependencies.
  */
-const api = require('./api/index');
+const api = require('./api/states');
 
-const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use('/api/states', api(State));
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 /**
  * Added DB connections.
  */
 
-MongoClient.connect("mongodb://batler12:qwerty22@ds135776.mlab.com:35776/apidb", (err, client) => {
-	if (err) return console.log(err);
-	const collectionStates = client.collection("states");
+const dbUrl = 'mongodb://batler12:qwerty22@ds135776.mlab.com:35776/apidb';
 
-	console.log("Connected to MongoDB");
+mongoose.connect(dbUrl, { useNewUrlParser: true }, () => {
+  try {
+    console.log('mongodb connected');
+  } catch (err) {
+    console.error(err)
+  }
+})
 
-	app.use(express.json());
-	app.use(express.urlencoded({ extended: false }));
+io.on('connection', () => {
+  console.log('user is connected');
+})
 
-	app.use('/api/states', api(collectionStates));
+/**
+ * Start server on 3000 port
+ */
 
-	// catch 404 and forward to error handler
-	app.use(function (req, res, next) {
-		next(createError(404));
-	});
-
-	// error handler
-	app.use(function (err, req, res, next) {
-		// set locals, only providing error in development
-		res.locals.message = err.message;
-		res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-		// render the error page
-		res.status(err.status || 500);
-		res.render('error');
-	});
+const server = http.listen(3000, () => {
+  try {
+    console.log('server is running on port', server.address().port);
+  } catch (err) {
+    console.error(err);
+  }
 });
-
-module.exports = app;
