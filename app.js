@@ -12,7 +12,7 @@ const State = mongoose.model('State', {
   stateValue: Number
 });
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://remote-control-iot-client.herokuapp.com/', credentials: true }));
 
 /**
  * Router dependencies.
