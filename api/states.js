@@ -21,12 +21,12 @@ module.exports = (mongooseModel, socketConnection) => {
     if (state.stateName === 'temperature') {
       switch (state.mode) {
         case 'auto': {
-          mongooseModel.updateOne({ stateName: 'temperature' }, { minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
             return res.send({ success: true, message: "Document updated!" });
           });
         }
         case 'manual': {
-          mongooseModel.updateOne({ stateName: 'temperature' }, { manualTemp: state.manualTemp }, { upsert: true }).then(() => {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
             return res.send({ success: true, message: "Document updated!" });
           });
         }
