@@ -18,9 +18,20 @@ module.exports = (mongooseModel, socketConnection) => {
 
     socketConnection.emit('checkbox state', state.stateValue);
 
-    mongooseModel.updateOne({ stateName: state.stateName }, { stateValue: state.stateValue }, { upsert: true }).then(() => {
-      return res.send({ success: true, message: "Document updated!" });
-    });
+    if (state.stateName === 'temperature') {
+      switch (state.mode) {
+        case 'auto': {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
+            return res.send({ success: true, message: "Document updated!" });
+          });
+        }
+        case 'manual': {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { manualTemp: state.manualTemp }, { upsert: true }).then(() => {
+            return res.send({ success: true, message: "Document updated!" });
+          });
+        }
+      }
+    }
 
   });
 
