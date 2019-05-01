@@ -19,48 +19,6 @@ module.exports = (mongooseModel, socketConnection) => {
 
     socketConnection.emit('checkbox state', state.stateValue);
 
-    // if (state.stateName === 'temperature') {
-    //   mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
-    //     if (err) {
-    //       console.error(err);
-
-    //       return res.send({
-    //         success: false,
-    //         message: err
-    //       })
-    //     }
-    //     if (result) {
-    //       switch (state.mode) {
-    //         case 'auto': {
-    //           console.log('AUTO')
-    //           result.mode = 'auto';
-    //           result.minTemp = state.minTemp;
-    //           result.maxTemp = state.maxTemp;
-
-    //           result.save();
-
-    //           return res.send({ data: result, success: true, message: "Auto mode updated!" });
-    //         }
-    //         case 'manual': {
-    //           console.log('MANUAL')
-    //           result.mode = 'manual';
-    //           result.manualTemp = state.manualTemp;
-
-    //           result.save();
-
-    //           return res.send({ data: result, success: true, message: "Manual mode updated!" });
-    //         }
-    //         default: {
-    //           return res.send({ success: false, message: "Mode not found" });
-    //         }
-    //       }
-    //     } else {
-    //       return res.send({ success: false, message: "Document not found" });
-    //     }
-    //   })
-    // }
-
-
     if (state.stateName === 'temperature') {
       switch (state.mode) {
         case 'auto': {

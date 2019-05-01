@@ -11,7 +11,7 @@ const State = mongoose.model('State', {
   mode: String,
   minTemp: Number,
   maxTemp: Number,
-  manualTemp: Number
+  manualTemp: Number,
 });
 
 app.use(function (req, res, next) {
