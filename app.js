@@ -8,7 +8,10 @@ const bodyParser = require("body-parser");
 
 const State = mongoose.model('State', {
   stateName: String,
-  stateValue: Number
+  mode: String,
+  minTemp: Number,
+  maxTemp: Number,
+  manualTemp: Number
 });
 
 app.use(function (req, res, next) {
