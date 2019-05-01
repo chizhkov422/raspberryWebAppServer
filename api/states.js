@@ -25,7 +25,7 @@ module.exports = (mongooseModel, socketConnection) => {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { mode: 'auto' }, { new: true }).then((newState) => {
+          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { $set: { mode: 'auto' } }, { new: true }).then((newState) => {
 
             return res.send({ data: newState, success: true, message: "Document updated!" });
           });
@@ -34,7 +34,7 @@ module.exports = (mongooseModel, socketConnection) => {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { mode: 'manual' }, { new: true }).then((newState) => {
+          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { $set: { mode: 'manual' } }, { new: true }).then((newState) => {
 
             return res.send({ data: newState, success: true, message: "Document updated!" });
           });
