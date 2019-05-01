@@ -12,7 +12,7 @@ module.exports = (mongooseModel, socketConnection) => {
       .catch(callBackForCatch.bind(null, res));
   });
 
-  router.post('/update', (req, res) => {
+  router.post('/update', async (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
     const state = JSON.parse(req.body.state);
@@ -21,7 +21,7 @@ module.exports = (mongooseModel, socketConnection) => {
 
 
     if (state.stateName === 'temperature') {
-      mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
+      await mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
         if (err) {
           console.error(err);
 
@@ -33,21 +33,19 @@ module.exports = (mongooseModel, socketConnection) => {
         if (result) {
           switch (state.mode) {
             case 'auto': {
-              console.log('AUTO')
               result.mode = 'auto';
               result.minTemp = state.minTemp;
               result.maxTemp = state.maxTemp;
 
-              result.save();
+              await result.save();
 
               return res.send({ data: result, success: true, message: "Auto mode updated!" });
             }
             case 'manual': {
-              console.log('MANUAL')
               result.mode = 'manual';
               result.manualTemp = state.manualTemp;
 
-              result.save();
+              await result.save();
 
               return res.send({ data: result, success: true, message: "Manual mode updated!" });
             }
