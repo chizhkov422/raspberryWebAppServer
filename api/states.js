@@ -25,7 +25,7 @@ module.exports = (mongooseModel, socketConnection) => {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.updateOne({ stateName: state.stateName }, { mode: 'auto' }, (err, newState) => {
+          mongooseModel.updateOne({ stateName: state.stateName }, { mode: 'auto' }, (err) => {
             if (err) {
               console.error(err);
 
@@ -34,14 +34,14 @@ module.exports = (mongooseModel, socketConnection) => {
                 message: err
               })
             }
-            return res.send({ data: newState, success: true, message: "Document updated!" });
+            return res.send({ success: true, message: "Document updated!" });
           });
         }
         case 'manual': {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.updateOne({ 'stateName': state.stateName }, { mode: 'manual' }, (err, newState) => {
+          mongooseModel.updateOne({ 'stateName': state.stateName }, { mode: 'manual' }, (err) => {
             if (err) {
               console.error(err);
 
@@ -50,7 +50,7 @@ module.exports = (mongooseModel, socketConnection) => {
                 message: err
               })
             }
-            return res.send({ data: newState, success: true, message: "Document updated!" });
+            return res.send({ success: true, message: "Document updated!" });
           });
         }
       }
