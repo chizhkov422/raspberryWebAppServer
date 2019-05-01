@@ -12,51 +12,90 @@ module.exports = (mongooseModel, socketConnection) => {
       .catch(callBackForCatch.bind(null, res));
   });
 
-  router.post('/update', async (req, res) => {
+  router.post('/update', (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
     const state = JSON.parse(req.body.state);
 
     socketConnection.emit('checkbox state', state.stateValue);
 
+    // if (state.stateName === 'temperature') {
+    //   mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
+    //     if (err) {
+    //       console.error(err);
+
+    //       return res.send({
+    //         success: false,
+    //         message: err
+    //       })
+    //     }
+    //     if (result) {
+    //       switch (state.mode) {
+    //         case 'auto': {
+    //           console.log('AUTO')
+    //           result.mode = 'auto';
+    //           result.minTemp = state.minTemp;
+    //           result.maxTemp = state.maxTemp;
+
+    //           result.save();
+
+    //           return res.send({ data: result, success: true, message: "Auto mode updated!" });
+    //         }
+    //         case 'manual': {
+    //           console.log('MANUAL')
+    //           result.mode = 'manual';
+    //           result.manualTemp = state.manualTemp;
+
+    //           result.save();
+
+    //           return res.send({ data: result, success: true, message: "Manual mode updated!" });
+    //         }
+    //         default: {
+    //           return res.send({ success: false, message: "Mode not found" });
+    //         }
+    //       }
+    //     } else {
+    //       return res.send({ success: false, message: "Document not found" });
+    //     }
+    //   })
+    // }
+
 
     if (state.stateName === 'temperature') {
-      await mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
-        if (err) {
-          console.error(err);
+      switch (state.mode) {
+        case 'auto': {
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
+          //   return res.send({ success: true, message: "Document updated!" });
+          // });
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, (err, newState) => {
+            if (err) {
+              console.error(err);
 
-          return res.send({
-            success: false,
-            message: err
-          })
+              return res.send({
+                success: false,
+                message: err
+              })
+            }
+            return res.send({ data: newState, success: true, message: "Document updated!" });
+          });
         }
-        if (result) {
-          switch (state.mode) {
-            case 'auto': {
-              result.mode = 'auto';
-              result.minTemp = state.minTemp;
-              result.maxTemp = state.maxTemp;
+        case 'manual': {
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
+          //   return res.send({ success: true, message: "Document updated!" });
+          // });
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, (err, newState) => {
+            if (err) {
+              console.error(err);
 
-              await result.save();
-
-              return res.send({ data: result, success: true, message: "Auto mode updated!" });
+              return res.send({
+                success: false,
+                message: err
+              })
             }
-            case 'manual': {
-              result.mode = 'manual';
-              result.manualTemp = state.manualTemp;
-
-              await result.save();
-
-              return res.send({ data: result, success: true, message: "Manual mode updated!" });
-            }
-            default: {
-              return res.send({ success: false, message: "Mode not found" });
-            }
-          }
-        } else {
-          return res.send({ success: false, message: "Document not found" });
+            return res.send({ data: newState, success: true, message: "Document updated!" });
+          });
         }
-      })
+      }
     }
 
   });
@@ -91,7 +130,7 @@ function callBackForGetAllStates(res, states) {
 }
 
 function callBackForCatch(res, err) {
-  console.error(err);
+  console.errorr(err);
 
   return res.send({
     success: false,
