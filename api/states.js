@@ -16,7 +16,9 @@ module.exports = (mongooseModel, socketConnection) => {
 
     const state = JSON.parse(req.body.state);
 
-    socketConnection.emit('checkbox state', state.stateValue);
+    // socketConnection.emit('checkbox state', state.stateValue);
+
+    console.log('POST REQUEST UPDATE')
 
     if (state.stateName === 'temperature') {
       switch (state.mode) {
