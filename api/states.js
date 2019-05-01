@@ -8,7 +8,8 @@ module.exports = (mongooseModel, socketConnection) => {
 
     mongooseModel
       .find()
-      .then(callBackForGetAllStates.bind(null, res));
+      .then(callBackForGetAllStates.bind(null, res))
+      .catch(callBackForCatch.bind(null, res));
   });
 
   router.post('/update', (req, res) => {
@@ -25,19 +26,23 @@ module.exports = (mongooseModel, socketConnection) => {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { $set: { mode: 'auto' } }, { new: true }).then((newState) => {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, { upsert: true })
+            .then((newState) => {
 
-            return res.send({ data: newState, success: true, message: "Document updated!" });
-          });
+              return res.send({ data: newState, success: true, message: "Document updated!" });
+            })
+            .catch(callBackForCatch.bind(null, res));
         }
         case 'manual': {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { $set: { mode: 'manual' } }, { new: true }).then((newState) => {
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, { upsert: true })
+            .then((newState) => {
 
-            return res.send({ data: newState, success: true, message: "Document updated!" });
-          });
+              return res.send({ data: newState, success: true, message: "Document updated!" });
+            })
+            .catch(callBackForCatch.bind(null, res));
         }
       }
     }
@@ -50,32 +55,34 @@ module.exports = (mongooseModel, socketConnection) => {
 
     mongooseModel
       .findOne({ stateName })
-      .then(callBackForGetState.bind(null, res));
+      .then(callBackForGetState.bind(null, res))
+      .catch(callBackForCatch.bind(null, res));
   });
 
   return router;
 }
 
 function callBackForGetState(res, state) {
-  try {
-    return res.send({
-      data: state,
-      success: true,
-      message: ""
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return res.send({
+    data: state,
+    success: true,
+    message: ""
+  });
 }
 
 function callBackForGetAllStates(res, states) {
-  try {
-    return res.send({
-      data: states,
-      success: true,
-      message: ""
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return res.send({
+    data: states,
+    success: true,
+    message: ""
+  });
+}
+
+function callBackForCatch(res, err) {
+  console.errorr(err);
+
+  return res.send({
+    success: false,
+    message: err
+  })
 }
