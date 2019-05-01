@@ -39,7 +39,7 @@ module.exports = (mongooseModel, socketConnection) => {
 
               result.save();
 
-              return res.send({ success: true, message: "Document updated!" });
+              return res.send({ data: result, success: true, message: "Document updated!" });
             }
             case 'manual': {
               result.mode = 'manual';
@@ -47,7 +47,7 @@ module.exports = (mongooseModel, socketConnection) => {
 
               result.save();
 
-              return res.send({ success: true, message: "Document updated!" });
+              return res.send({ data: result, success: true, message: "Document updated!" });
             }
             default: {
               return res.send({ success: false, message: "Mode not found" });
