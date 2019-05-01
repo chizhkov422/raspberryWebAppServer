@@ -21,16 +21,21 @@ module.exports = (mongooseModel, socketConnection) => {
     console.log('POST REQUEST UPDATE', state);
 
     if (state.stateName === 'temperature') {
+      console.log('BEFORE SWITCH')
       switch (state.mode) {
         case 'auto': {
-          mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp } }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
-          });
+          console.log('AUTO')
+          return res.send({ success: true, message: "Document updated!" });
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp } }, { upsert: true }).then(() => {
+          //   return res.send({ success: true, message: "Document updated!" });
+          // });
         }
         case 'manual': {
-          mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'manual', manualTemp: state.manualTemp } }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
-          });
+          console.log('MANUAL')
+          return res.send({ success: true, message: "Document updated!" });
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'manual', manualTemp: state.manualTemp } }, { upsert: true }).then(() => {
+          //   return res.send({ success: true, message: "Document updated!" });
+          // });
         }
       }
     }
