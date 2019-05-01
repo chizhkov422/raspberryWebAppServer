@@ -33,21 +33,23 @@ module.exports = (mongooseModel, socketConnection) => {
         if (result) {
           switch (state.mode) {
             case 'auto': {
+              console.log('AUTO')
               result.mode = 'auto';
               result.minTemp = state.minTemp;
               result.maxTemp = state.maxTemp;
 
               result.save();
 
-              return res.send({ data: result, success: true, message: "Document updated!" });
+              return res.send({ data: result, success: true, message: "Auto mode updated!" });
             }
             case 'manual': {
+              console.log('MANUAL')
               result.mode = 'manual';
               result.manualTemp = state.manualTemp;
 
               result.save();
 
-              return res.send({ data: result, success: true, message: "Document updated!" });
+              return res.send({ data: result, success: true, message: "Manual mode updated!" });
             }
             default: {
               return res.send({ success: false, message: "Mode not found" });
