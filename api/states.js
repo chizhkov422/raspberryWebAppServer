@@ -16,26 +16,26 @@ module.exports = (mongooseModel, socketConnection) => {
 
     const state = JSON.parse(req.body.state);
 
-    // socketConnection.emit('checkbox state', state.stateValue);
+    socketConnection.emit('checkbox state', state.stateValue);
 
-    console.log('POST REQUEST UPDATE', state);
 
     if (state.stateName === 'temperature') {
-      console.log('BEFORE SWITCH')
       switch (state.mode) {
         case 'auto': {
-          console.log('AUTO')
-          return res.send({ success: true, message: "Document updated!" });
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp } }, { upsert: true }).then(() => {
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, { upsert: true }).then(() => {
+            return res.send({ success: true, message: "Document updated!" });
+          });
         }
         case 'manual': {
-          console.log('MANUAL')
-          return res.send({ success: true, message: "Document updated!" });
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { $set: { mode: 'manual', manualTemp: state.manualTemp } }, { upsert: true }).then(() => {
+          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
+          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, { upsert: true }).then(() => {
+            return res.send({ success: true, message: "Document updated!" });
+          });
         }
       }
     }
