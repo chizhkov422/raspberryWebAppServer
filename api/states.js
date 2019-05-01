@@ -22,12 +22,18 @@ module.exports = (mongooseModel, socketConnection) => {
       switch (state.mode) {
         case 'auto': {
           mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
+            return res
+              .header("Access-Control-Allow-Origin", "*")
+              .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+              .send({ success: true, message: "Document updated!" });
           });
         }
         case 'manual': {
           mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
+            return res
+              .header("Access-Control-Allow-Origin", "*")
+              .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+              .send({ success: true, message: "Document updated!" });
           });
         }
       }
