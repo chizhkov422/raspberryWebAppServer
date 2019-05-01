@@ -77,7 +77,7 @@ function callBackForGetAllStates(res, states) {
 }
 
 function callBackForCatch(res, err) {
-  console.errorr(err);
+  console.error(err);
 
   return res.send({
     success: false,
