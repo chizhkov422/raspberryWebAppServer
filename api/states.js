@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 
 module.exports = (mongooseModel, socketConnection) => {
@@ -25,16 +26,23 @@ module.exports = (mongooseModel, socketConnection) => {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
+          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { mode: 'auto' }, { new: true }).then((err, state) => {
+
+            mongoose.disconnect();
+            if (err) return console.error(err);
+
+            return res.send({ data: state, success: true, message: "Document updated!" });
           });
         }
         case 'manual': {
           // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
-          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, { upsert: true }).then(() => {
-            return res.send({ success: true, message: "Document updated!" });
+          mongooseModel.findOneAndUpdate({ stateName: 'temperature' }, { mode: 'manual' }, { new: true }).then((err, state) => {
+            mongoose.disconnect();
+            if (err) return console.error(err);
+
+            return res.send({ data: state, success: true, message: "Document updated!" });
           });
         }
       }
@@ -56,6 +64,8 @@ module.exports = (mongooseModel, socketConnection) => {
 
 function callBackForGetState(res, state) {
   try {
+
+    mongoose.disconnect();
     return res.send({
       data: state,
       success: true,
@@ -68,6 +78,8 @@ function callBackForGetState(res, state) {
 
 function callBackForGetAllStates(res, states) {
   try {
+
+    mongoose.disconnect();
     return res.send({
       data: states,
       success: true,
