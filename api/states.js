@@ -21,28 +21,42 @@ module.exports = (mongooseModel, socketConnection) => {
 
 
     if (state.stateName === 'temperature') {
-      switch (state.mode) {
-        case 'auto': {
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
-          //   return res.send({ success: true, message: "Document updated!" });
-          // });
-          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, { upsert: true })
-            .then(() => {
-              return res.send({ success: true, message: "Document updated!" });
-            })
-            .catch(callBackForCatch.bind(null, res));
+      mongooseModel.findOne({ stateName: 'temperature' }).exec((err, result) => {
+        if (err) {
+          console.error(err);
+
+          return res.send({
+            success: false,
+            message: err
+          })
         }
-        case 'manual': {
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
-          //   return res.send({ success: true, message: "Document updated!" });
-          // });
-          mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, { upsert: true })
-            .then(() => {
+        if (result) {
+          switch (state.mode) {
+            case 'auto': {
+              result.mode = 'auto';
+              result.minTemp = state.minTemp;
+              result.maxTemp = state.maxTemp;
+
+              result.save();
+
               return res.send({ success: true, message: "Document updated!" });
-            })
-            .catch(callBackForCatch.bind(null, res));
+            }
+            case 'manual': {
+              result.mode = 'manual';
+              result.manualTemp = state.manualTemp;
+
+              result.save();
+
+              return res.send({ success: true, message: "Document updated!" });
+            }
+            default: {
+              return res.send({ success: false, message: "Mode not found" });
+            }
+          }
+        } else {
+          return res.send({ success: false, message: "Document not found" });
         }
-      }
+      })
     }
 
   });
