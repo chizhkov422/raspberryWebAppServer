@@ -27,9 +27,8 @@ module.exports = (mongooseModel, socketConnection) => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
           mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto' }, { upsert: true })
-            .then((newState) => {
-
-              return res.send({ data: newState, success: true, message: "Document updated!" });
+            .then(() => {
+              return res.send({ success: true, message: "Document updated!" });
             })
             .catch(callBackForCatch.bind(null, res));
         }
@@ -38,9 +37,8 @@ module.exports = (mongooseModel, socketConnection) => {
           //   return res.send({ success: true, message: "Document updated!" });
           // });
           mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual' }, { upsert: true })
-            .then((newState) => {
-
-              return res.send({ data: newState, success: true, message: "Document updated!" });
+            .then(() => {
+              return res.send({ success: true, message: "Document updated!" });
             })
             .catch(callBackForCatch.bind(null, res));
         }
