@@ -17,14 +17,11 @@ module.exports = (mongooseModel, socketConnection) => {
 
     const state = JSON.parse(req.body.state);
 
-    socketConnection.emit('checkbox state', state.stateValue);
+    socketConnection.emit('temperatureState', state);
 
     if (state.stateName === 'temperature') {
       switch (state.mode) {
         case 'auto': {
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, { upsert: true }).then(() => {
-          //   return res.send({ success: true, message: "Document updated!" });
-          // });
           mongooseModel.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
             if (err) {
               console.error(err);
@@ -38,9 +35,6 @@ module.exports = (mongooseModel, socketConnection) => {
           });
         }
         case 'manual': {
-          // mongooseModel.updateOne({ stateName: 'temperature' }, { mode: 'manual', manualTemp: state.manualTemp }, { upsert: true }).then(() => {
-          //   return res.send({ success: true, message: "Document updated!" });
-          // });
           mongooseModel.updateOne({ 'stateName': state.stateName }, { mode: 'manual', manualTemp: state.manualTemp }, (err) => {
             if (err) {
               console.error(err);

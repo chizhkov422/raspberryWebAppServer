@@ -59,8 +59,15 @@ mongoose.connect(dbUrl, { useNewUrlParser: true }, () => {
   }
 })
 
-io.on('connection', () => {
-  console.log('user is connected: ');
+io.on('connection', (socket) => {
+  State
+    .findOne({ stateName: 'temperature' })
+    .then((data) => {
+      socket.emit('temperatureState', data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 })
 
 /**
