@@ -76,23 +76,26 @@ io.on('connection', (socket) => {
 
   socket.on('temperatureState', (state) => {
 
-    console.log('STATE', state);
-    switch (state.mode) {
-      case 'auto': {
-        State.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
-          if (err) {
-            console.error(err);
-          }
-          console.log('Auto mode updated!');
-        });
-      }
-      case 'manual': {
-        State.updateOne({ 'stateName': state.stateName }, { mode: 'manual', manualTemp: state.manualTemp }, (err) => {
-          if (err) {
-            console.error(err);
-          }
-          console.log('Manual mode updated!')
-        });
+    if (state.webClient) {
+      switch (state.mode) {
+        case 'auto': {
+          console.log('AUTO MODE');
+          State.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
+            if (err) {
+              console.error(err);
+            }
+            console.log('Auto mode updated!');
+          });
+        }
+        case 'manual': {
+          console.log('MANUAL MODE');
+          State.updateOne({ 'stateName': state.stateName }, { mode: 'manual', manualTemp: state.manualTemp }, (err) => {
+            if (err) {
+              console.error(err);
+            }
+            console.log('Manual mode updated!')
+          });
+        }
       }
     }
   });
