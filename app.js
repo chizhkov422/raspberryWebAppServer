@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
       }
     }
 
-    socket.broadcast.emit('CHanged');
+    socket.broadcast.emit('temperatureState', state);
   });
 })
 
