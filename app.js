@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
   State
     .findOne({ stateName: 'temperature' })
     .then((data) => {
+      data.initialState = true;
       socket.emit('temperatureState', data);
     })
     .catch((err) => {
