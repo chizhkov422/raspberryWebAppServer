@@ -76,14 +76,10 @@ io.on('connection', (socket) => {
 
   socket.on('temperatureState', (data) => {
     const state = JSON.parse(data);
-    console.log('KU', state.webClient);
-    console.log('webClient', state.webClient);
-    console.log('mode', state.mode);
+
     if (state.webClient) {
-      console.log('KUKU', state);
       switch (state.mode) {
         case 'auto': {
-          console.log('AUTO MODE');
           State.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
             if (err) {
               console.error(err);
@@ -93,7 +89,6 @@ io.on('connection', (socket) => {
           break;
         }
         case 'manual': {
-          console.log('MANUAL MODE');
           State.updateOne({ 'stateName': state.stateName }, { mode: 'manual', manualTemp: state.manualTemp }, (err) => {
             if (err) {
               console.error(err);
@@ -104,6 +99,8 @@ io.on('connection', (socket) => {
         }
       }
     }
+
+    socket.broadcast.emit('CHanged');
   });
 })
 
