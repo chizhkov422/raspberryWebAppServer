@@ -75,7 +75,9 @@ io.on('connection', (socket) => {
     });
 
   socket.on('temperatureState', (state) => {
-    console.log('KU', state);
+    console.log('KU', state.webClient);
+    console.log('webClient', state.webClient);
+    console.log('mode', state.mode);
     if (state.webClient) {
       console.log('KUKU', state);
       switch (state.mode) {
