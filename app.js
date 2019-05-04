@@ -74,7 +74,8 @@ io.on('connection', (socket) => {
       console.error(err);
     });
 
-  socket.on('temperatureState', (state) => {
+  socket.on('temperatureState', (data) => {
+    const state = JSON.parse(data);
     console.log('KU', state.webClient);
     console.log('webClient', state.webClient);
     console.log('mode', state.mode);
