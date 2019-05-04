@@ -73,6 +73,27 @@ io.on('connection', (socket) => {
     .catch((err) => {
       console.error(err);
     });
+
+  socket.on('temperatureState', (state) => {
+    switch (state.mode) {
+      case 'auto': {
+        State.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
+          if (err) {
+            console.error(err);
+          }
+          console.log('Auto mode updated!');
+        });
+      }
+      case 'manual': {
+        State.updateOne({ 'stateName': state.stateName }, { mode: 'manual', manualTemp: state.manualTemp }, (err) => {
+          if (err) {
+            console.error(err);
+          }
+          console.log('Manual mode updated!')
+        });
+      }
+    }
+  });
 })
 
 /**
