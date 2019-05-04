@@ -68,14 +68,14 @@ io.on('connection', (socket) => {
         initialState: true,
       };
 
-      socket.emit('temperatureState', response);
+      socket.emit('temperatureStateClient', response);
+      socket.emit('temperatureStateRaspberry', response);
     })
     .catch((err) => {
       console.error(err);
     });
 
-  socket.on('temperatureState', (data) => {
-    const state = JSON.parse(data);
+  socket.on('updateTemperatureState', (state) => {
 
     if (state.webClient) {
       switch (state.mode) {
@@ -101,6 +101,10 @@ io.on('connection', (socket) => {
     }
 
     io.emit('temperatureStateRaspberry', state);
+  });
+
+  socket.on('temperatureSensorValue', (currentTemperature) => {
+    socket.emit('currentTemperatureForClient', currentTemperature);
   });
 })
 
