@@ -75,6 +75,8 @@ io.on('connection', (socket) => {
     });
 
   socket.on('temperatureState', (state) => {
+
+    console.log('STATE', state);
     switch (state.mode) {
       case 'auto': {
         State.updateOne({ stateName: state.stateName }, { mode: 'auto', minTemp: state.minTemp, maxTemp: state.maxTemp }, (err) => {
