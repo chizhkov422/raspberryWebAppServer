@@ -90,6 +90,7 @@ io.on('connection', (socket) => {
             }
             console.log('Auto mode updated!');
           });
+          break;
         }
         case 'manual': {
           console.log('MANUAL MODE');
@@ -99,6 +100,7 @@ io.on('connection', (socket) => {
             }
             console.log('Manual mode updated!')
           });
+          break;
         }
       }
     }
