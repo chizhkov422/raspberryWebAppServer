@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
   socket.on('temperatureState', (state) => {
 
     if (state.webClient) {
+      console.log('KUKU', state);
       switch (state.mode) {
         case 'auto': {
           console.log('AUTO MODE');
