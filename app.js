@@ -67,9 +67,11 @@ io.on('connection', (socket) => {
         data,
         initialState: true,
       };
-
+      console.log('BEFORE_EMIT', response);
       socket.emit('temperatureStateClient', response);
       socket.emit('temperatureStateRaspberry', response);
+
+      console.log('After_EMIT', response);
     })
     .catch((err) => {
       console.error(err);
